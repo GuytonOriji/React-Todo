@@ -1,6 +1,9 @@
 import React from 'react'
 import styled from 'styled-components'
-import {Container, Card} from 'reactstrap'
+import {Card} from 'reactstrap'
+
+
+
 
 
 const Form = styled.form`
@@ -42,7 +45,27 @@ const inp_title = {
 }
 
 
-class Todoform extends React.Component {
+let curentList;
+
+function check(){
+  if(window.localStorage.getItem("theList")){
+
+     curentList = JSON.parse(window.localStorage.getItem("theList"))
+}else{
+   curentList = 'none saved';
+
+}
+
+
+
+}
+
+check()
+
+
+
+
+class SearchForm extends React.Component {
 	constructor(){
 		super()
 		this.state={
@@ -50,13 +73,6 @@ class Todoform extends React.Component {
 		}
 	}
 
-		newTask = task =>{
-
-
-			this.setState({
-			theTask:task.target.value
-			})
-		}
 
 		sendTask = task =>{
 			task.preventDefault()
@@ -70,15 +86,22 @@ class Todoform extends React.Component {
 			<Card style={holdCard}>
 				<Form>
     <label>
-      <span style={inp_title}>todo</span>
-      <input type='text' onChange={this.newTask} className="form-control"/>
+      <span style={inp_title}>Saved</span>
+      <input type='text' list="curList" className="form-control"/>
+      <datalist  id="curList" >
+      {
+      	curentList.map(task=>{
+      		return (
+      			<option value={task.task}  key={task.id} />
+      			)
+      	})
+      }
+
+      </datalist>
+
     </label>
   
 
-  <div>
-      <button type="button" className="btn btn-info" onClick={this.sendTask}>Add</button>
-      <button type="button" className="btn btn-danger" onClick={this.props.clearList} >Clear</button>
-  </div>
 </Form>
 
 		</Card>
@@ -92,4 +115,4 @@ class Todoform extends React.Component {
 
 
 
-export default Todoform;
+export default SearchForm;
